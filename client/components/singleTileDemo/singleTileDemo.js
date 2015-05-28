@@ -3,7 +3,7 @@
 Template.singleTileDemo.onRendered(function() {
 
 
-    Meteor.setTimeout(function(){
+    //Meteor.setTimeout(function(){
         Famous.Engine.init();
         var scene = Famous.Engine.createScene('div#famousScene');
 
@@ -18,9 +18,33 @@ Template.singleTileDemo.onRendered(function() {
             .setOrigin(0, 0, 0);
 
 
+        var elementArray = [
+          {
+            atomicMass: "1.00794(4)",
+            atomicNumber: 1,
+            name: "Hydrogen",
+            symbol: "H"
+          },
+          {
+            atomicMass: "4.002602(2)",
+            atomicNumber: 2,
+            name: "Helium",
+            symbol: "He"
+            },
+          {
+            atomicMass: "6.941(2)",
+            atomicNumber: 3,
+            name: "Lithium",
+            symbol: "Li"
+          }
 
-        Elements.find().fetch().forEach(function(element, index){
-          console.log("element", element);
+        ];
+
+
+
+        //Elements.find().fetch().forEach(function(element, index){
+        elementArray.forEach(function(element, index){
+            console.log("element", element);
 
           var elementNode = rootNode.addChild();
 
@@ -67,7 +91,7 @@ Template.singleTileDemo.onRendered(function() {
           elementNode.requestUpdate(spinner);
 
         });
-    }, 500)
+    //}, 500)
 
 
 });
