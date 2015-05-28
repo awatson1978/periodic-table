@@ -2,35 +2,71 @@
 
 Template.singleTileDemo.onRendered(function() {
 
-    $(".famous-container").remove();
-    div = document.createElement('div');
-    div.className += "famous-container";
-    document.body.appendChild(div);
-    Famous.Engine.init();
 
-    var scene = Famous.Engine.createScene('div');
+    Famous.Engine.init();
+    var scene = Famous.Engine.createScene('div#famousScene');
 
     var rootNode = scene.addChild();
-    var aNode = scene.addChild();
-
-    aNode
-        .setSizeMode('absolute', 'absolute', 'absolute')
-        .setAbsoluteSize(350, 50)
-        .setAlign(0.5,0,0)
-        .setMountPoint(0.5, 0)
-        .setOrigin(0.5, 0,0)
 
 
     rootNode
-        // Set size mode to 'absolute' to use absolute pixel values: (width 250px, height 250px)
         .setSizeMode('absolute', 'absolute', 'absolute')
-        .setAbsoluteSize(250, 250)
-        .setAlign(0.5, 0.5,10)
+        .setAbsoluteSize(360, 480)
+        .setAlign(0.5, 0.5, 10)
         .setMountPoint(0.5, 0.5)
-        .setOrigin(0.5, 0.5,10)
+        .setOrigin(0.5, 0.5,10);
 
 
-    var element = new Famous.DOMElement(rootNode, {
+    var colors = ["Red", "Blue", "Green"];
+
+    Elements.find().fetch().forEach(function(element){
+      console.log("element", element);
+    });
+
+    colors.forEach(function(color, index){
+      console.log("color", color);
+
+      var foo = rootNode.addChild();
+
+      foo
+        .setSizeMode('absolute', 'absolute', 'absolute')
+        .setAbsoluteSize(120, 160)
+        .setAlign(index + 0.5, 0.5,10)
+        .setMountPoint(index + 0.5, 0.5)
+        .setOrigin(0.5 + index, 0.5 + index, 10)
+
+
+      var element = new Famous.DOMElement(foo, {
+          tagName: 'div',
+          //content: color + "<br>" + index,
+          content: $('#sampleText').html(),
+          properties: {
+              'height': '160px',
+              'width': '120px',
+              'color':'white',
+              'cursor': 'pointer',
+              'opacity': '.99999',
+              'letter-spacing': '2px',
+              'display': 'inline-block',
+              'background-color':'rgba(73, 160, 154, 0.160784)',
+              'background-image': "url(panel-item-ticks-hq.png)",
+              'background-repeat': 'no-repeat',
+              'background-size': '100% 100%',
+              '-webkit-box-shadow': '0 0 12px rgba(231,254,237,0.6)',
+              '-webkit-backface-visibility': 'visible',
+              'text-align': 'center',
+              'font-family': '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',
+              'font-weight': '300'
+
+          }
+      })
+      .setAttribute('src', 'panel-item-ticks-hq.png');
+
+    });
+
+
+
+    /*var element2 = new Famous.DOMElement(rootNode, {
         tagName: 'img',
         content: 'Famo.us Mixed Mode Examples!',
         properties: {
@@ -42,9 +78,9 @@ Template.singleTileDemo.onRendered(function() {
             'opacity': '.99999',
             'letter-spacing': '2px',
             'background-repeat': 'no-repeat',
-            'background-size': '100% 100%',
+            'background-size': '50% 50%',
         }
-    }).setAttribute('src', 'panel-item-ticks-hq.png');
+    }).setAttribute('src', 'panel-item-ticks-hq.png');*/
 
 
     var spinner = rootNode.addComponent({
