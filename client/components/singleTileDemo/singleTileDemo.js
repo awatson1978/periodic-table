@@ -36,6 +36,18 @@ Template.singleTileDemo.onRendered(function() {
             atomicNumber: 3,
             name: "Lithium",
             symbol: "Li"
+          },
+          {
+            atomicMass: "9.012182(3)",
+            atomicNumber: 4,
+            name: "Beryllium",
+            symbol: "Be"
+          },
+          {
+            atomicMass: "10.811(7)",
+            atomicNumber: 5,
+            name: "Boron",
+            symbol: "B"
           }
 
         ];
