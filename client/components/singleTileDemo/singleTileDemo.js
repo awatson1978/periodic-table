@@ -17,7 +17,6 @@ Template.singleTileDemo.onRendered(function() {
         .setOrigin(0, 0, 0);
 
 
-    var colors = ["Red", "Blue", "Green"];
 
     Elements.find().fetch().forEach(function(element, index){
       console.log("element", element);
@@ -27,7 +26,7 @@ Template.singleTileDemo.onRendered(function() {
       elementNode
         .setSizeMode('absolute', 'absolute', 'absolute')
         .setAbsoluteSize(120, 160)
-        .setAlign(index * 0.5, 0.5, 10)
+        .setAlign((index + 1) * 0.5, 0.5, 10)
         .setMountPoint( 0.5, 0.5)
         .setOrigin(0.5, 0.5, 10)
 
