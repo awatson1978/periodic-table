@@ -4,7 +4,7 @@ Router.route('/transforms', {
   name: "transformsGrid",
   waitOn: function () {
     return Meteor.subscribe('Elements');
-  },
+  }
 });
 
 
