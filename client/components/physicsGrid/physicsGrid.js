@@ -26,43 +26,81 @@ Template.physicsGrid.onRendered(function() {
 
 
   var scene = Famous.Engine.createScene('div#famousScene');
-
   var rootNode = scene.addChild();
 
 
   var peUpdater = scene.addComponent({
       onUpdate: function (time) {
-                    physicsEngine.update(time);
-                    scene.requestUpdateOnNextTick(peUpdater);
-                }
+          physicsEngine.update(time);
+          scene.requestUpdateOnNextTick(peUpdater);
+        }
   });
 
   scene.requestUpdate(peUpdater);
   var root = scene.addChild();
   var sized = false;
+  var hydrogen = {
+    atomicMass: "1.00794(4)",
+    atomicNumber: 1,
+    atomicRadius: 37,
+    name: "Hydrogen",
+    symbol: "H"
+  };
+  var element = hydrogen;
+
+
   root.addComponent({
       onSizeChange: function (size) {
           if (!sized) {
-              for (var i = 0 ; i < (totalRows * totalCols) ; i++){
-                  Dot(root.addChild(), i, size);
-              }
-              sized = true;
+
+            Elements.find().forEach(function(element, index){
+              Dot(root.addChild(), index, size, element);
+            });
+
+            sized = true;
           }
       }
   });
 
 
-  Dot = function(node, i, sceneSize) {
-      node.setProportionalSize(1 / 12, 1 / 18)
+
+
+  Dot = function(node, i, sceneSize, element) {
+      node.setProportionalSize(1 / 8, 1 / 6)
           .setDifferentialSize(-4, -4);
 
-      new Famous.Mesh(node).setGeometry(new Famous.Circle())
-                    .setBaseColor(new Famous.Color(createColorStep(i / 18)));
+      /*new Famous.Mesh(node).setGeometry(new Famous.Circle())
+                    .setBaseColor(new Famous.Color(createColorStep(i / 18)));*/
 
-      new Phys(node, sceneSize[0] * (i % totalRows) / totalRows,
-                     sceneSize[1] * ((((i / totalRows)|0) % totalCols) / totalCols));
+      new Phys(node, sceneSize[0] * 1.5 * (i % totalRows) / totalRows,
+                     sceneSize[1] * 2.5 * ((((i / totalRows)|0) % totalCols) / totalCols));
+
+      new Famous.DOMElement(node, {
+          tagName: 'div',
+          content: '<span class="atomicNumberText">' + element.atomicNumber + '</span><br><h1 class="center">' + element.symbol + '</h1><h5 class="center">' + element.name + '<br>' + element.atomicMass + '<br></h5>',
+          properties: {
+              //background: createColorStep(step),
+              //borderRadius: '100%',
+              'height': '160px',
+              'width': '120px',
+              'color':'white',
+              'cursor': 'pointer',
+              'opacity': '.99999',
+              'letter-spacing': '2px',
+              'display': 'inline-block',
+              'background-color':'rgba(73, 160, 154, 0.160784)',
+              'background-image': "url(panel-item-ticks-hq.png)",
+              'background-repeat': 'no-repeat',
+              'background-size': '100% 100%',
+              '-webkit-box-shadow': '0 0 12px rgba(231,254,237,0.6)',
+              '-webkit-backface-visibility': 'visible',
+              'text-align': 'center',
+              'font-family': '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',
+              'font-weight': '300'
+          }
+      });
   }
-  
+
   Phys = function(node, x, y) {
       this.id = node.addComponent(this);
       this.node = node;
@@ -71,8 +109,8 @@ Template.physicsGrid.onRendered(function() {
           position: new Famous.Vec3(x, y, 0)
       });
       this.force = new Famous.Spring(null, this.body, {
-          period: 0.9,
-          dampingRatio: 0.12,
+          period: 1.5,
+          dampingRatio: 0.3,
           anchor: new Famous.Vec3(x, y, 0)
       });
       physicsEngine.add(this.body, this.force);
@@ -84,14 +122,14 @@ Template.physicsGrid.onRendered(function() {
       this.node.requestUpdateOnNextTick(this.id);
   }
 
-  createColorStep = function(step, isDom) {
+  /*createColorStep = function(step, isDom) {
     step -= (step >= totalCols) ? totalCols : 0;
     var r = colors[0][0] - Math.round(((colors[0][0] - colors[1][0]) / totalCols) * step);
     var g = colors[0][1] - Math.round(((colors[0][1] - colors[1][1]) / totalCols) * step);
     var b = colors[0][2] - Math.round(((colors[0][2] - colors[1][2]) / totalCols) * step);
     if (isDom) return 'rgb(' + r + ',' + g + ',' + b + ')';
     return [r, g, b];
-  }
+  }*/
 
   document.addEventListener('mousemove', function (e) {
       grav.anchor.set(e.pageX, e.pageY);
@@ -101,71 +139,16 @@ Template.physicsGrid.onRendered(function() {
       e.preventDefault();
   });
 
-  /*rootNode
-      .setSizeMode('absolute', 'absolute', 'absolute')
-      .setAbsoluteSize(360, 480)
-      .setAlign(0.15, 0.5, 10)
-      .setMountPoint(0.5, 0.5)
-      .setOrigin(0, 0, 0);
 
-
-  Elements.find().forEach(function(element, index){
-    //elementArray.forEach(function(element, index){
-    //console.log("element", element);
-
-    var elementNode = rootNode.addChild();
-
-    elementNode
-      .setSizeMode('absolute', 'absolute', 'absolute')
-      .setAbsoluteSize(120, 160)
-      .setAlign((index + 1) * 0.5, 0.5, 10)
-      .setMountPoint( 0.5, 0.5)
-      .setOrigin(0.5, 0.5, 10);
-
-
-    new Famous.DOMElement(elementNode, {
-        tagName: 'div',
-        content: '<span class="atomicNumberText">' + element.atomicNumber + '</span><br><h1 class="center">' + element.symbol + '</h1><h5 class="center">' + element.name + '<br>' + element.atomicMass + '<br></h5>',
-        //content: $('#sampleText').html(),
-        properties: {
-            'height': '160px',
-            'width': '120px',
-            'color':'white',
-            'cursor': 'pointer',
-            'opacity': '.99999',
-            'letter-spacing': '2px',
-            'display': 'inline-block',
-            'background-color':'rgba(73, 160, 154, 0.160784)',
-            'background-image': "url(panel-item-ticks-hq.png)",
-            'background-repeat': 'no-repeat',
-            'background-size': '100% 100%',
-            '-webkit-box-shadow': '0 0 12px rgba(231,254,237,0.6)',
-            '-webkit-backface-visibility': 'visible',
-            'text-align': 'center',
-            'font-family': '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',
-            'font-weight': '300'
-
-        }
-    })
-    .setAttribute('src', 'panel-item-ticks-hq.png');
-
-    var spinner = elementNode.addComponent({
-        onUpdate: function(time) {
-            elementNode.setRotation(0, time / 1000, 0);
-            elementNode.requestUpdateOnNextTick(spinner);
-        }
-    });
-    elementNode.requestUpdate(spinner);
-
-  });*/
 });
 
 
 
-Template.singleTileDemo.onDestroyed(function(){
+Template.physicsGrid.onDestroyed(function(){
   console.log("Removing PhysicsGrid");
-  $('div#famousScene .famous-dom-renderer').remove();
-  physicsEngine = null;
+  //$('#famousScene .famous-dom-renderer').remove();
+  //$('#famouseScene .famous-webgl-renderer').remove();
+  //physicsEngine = null;
 });
 
 
@@ -176,18 +159,4 @@ colors = [ [151, 131, 242], [47, 189, 232] ];
 totalCols = 12;
 totalRows = 10;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// APP CODE
+DOT_SIZE = 120;

@@ -39,23 +39,8 @@ Template.singleTileDemo.onRendered(function() {
       atomicMass: "1.00794(4)",
       atomicNumber: 1,
       atomicRadius: 37,
-      boilingPoint: 20,
-      bondingType: "diatomic",
-      cpkHexColor: "FFFFFF",
-      density: 0.0000899,
-      electronAffinity: -73,
-      electronegativity: 2.2,
-      electronicConfiguration: "1s1",
-      groupBlock: "nonmetal",
-      ionRadius: "",
-      ionizationEnergy: 1312,
-      meltingPoint: 14,
       name: "Hydrogen",
-      oxidationStates: "-1, 1",
-      standardState: "gas",
-      symbol: "H",
-      vanDelWaalsRadius: 120,
-      yearDiscovered: 1766
+      symbol: "H"
     };
 
 

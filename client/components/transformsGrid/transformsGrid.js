@@ -17,6 +17,14 @@ Template.transformsGrid.onRendered(function() {
   Famous.Engine.init();
   var scene = Famous.Engine.createScene('div#famousScene');
 
+  var hydrogen = {
+    atomicMass: "1.00794(4)",
+    atomicNumber: 1,
+    atomicRadius: 37,
+    name: "Hydrogen",
+    symbol: "H"
+  };
+
   // var rootNode = scene.addChild();
 
 
@@ -25,44 +33,87 @@ Template.transformsGrid.onRendered(function() {
 
 
 
+  var element = hydrogen;
+  var self = this;
+
+  // The Demo lays out the dots in form of a grid.
+  Demo = function(rows, cols, Elements) {
+      var self = this;
+
+      Famous.Node.call(this);
+
+      var count = 0;
+      this.dots = [];
+
+
+      Elements.find({}, {limit: 36}).forEach(function(element, index){
+        console.log("element", element);
+
+        var dot = new Dot(index, element);
+        self.addChild(dot);
+        self.dots.push(dot);
+      });
+
+      // Add spinner component. This makes the Demo rotate.
+      this.spinner = new Spinner(this);
+
+      // Center demo
+      this
+          .setMountPoint(0.5, 0.5, 0.5)
+          .setAlign(0.5, 0.5, 0.5)
+          .setOrigin(0.5, 0, 0)
+          .setPosition(0, 0);
+
+      this.layout = new Layout(this);
+      Famous.Engine.getClock().setInterval(function() {
+          this.layout.next();
+      }.bind(this), 2000);
+  }
   Demo.prototype = Object.create(Famous.Node.prototype);
   Demo.prototype.constructor = Demo;
 
   Dot.prototype = Object.create(Famous.Node.prototype);
   Dot.prototype.constructor = Dot;
 
-  scene.addChild(new Demo(6, 6));
+
+  scene.addChild(new Demo(6, 6, Elements));
+
+});
+
+
+
+Template.singleTileDemo.onDestroyed(function(){
+  console.log("Removing ListOfSpinners");
+  $('div#famousScene .famous-dom-renderer').remove();
+});
+
+COLORS = [ [151, 131, 242], [47, 189, 232] ];
+COLOR_STEPS = 18;
+DOT_SIZE = 120;
 
 
 
 
-  /*rootNode
-      .setSizeMode('absolute', 'absolute', 'absolute')
-      .setAbsoluteSize(360, 480)
-      .setAlign(0.15, 0.5, 10)
-      .setMountPoint(0.5, 0.5)
-      .setOrigin(0, 0, 0);
 
+// Dots are nodes.
+// They have a DOMElement attached to them by default.
+Dot = function(step, element) {
+    Famous.Node.call(this);
 
-  Elements.find().forEach(function(element, index){
-    //elementArray.forEach(function(element, index){
-    //console.log("element", element);
+    // Center dot.
+    this
+        .setMountPoint(0.5, 0.5, 10)
+        .setAlign(0.5, 0.5, 0.5)
+        .setSizeMode('absolute', 'absolute', 'absolute')
+        .setAbsoluteSize(DOT_SIZE, DOT_SIZE, DOT_SIZE);
 
-    var elementNode = rootNode.addChild();
-
-    elementNode
-      .setSizeMode('absolute', 'absolute', 'absolute')
-      .setAbsoluteSize(120, 160)
-      .setAlign((index + 1) * 0.5, 0.5, 10)
-      .setMountPoint( 0.5, 0.5)
-      .setOrigin(0.5, 0.5, 10);
-
-
-    new Famous.DOMElement(elementNode, {
+    // Add the DOMElement (DOMElements are components).
+    this.el = new Famous.DOMElement(this, {
         tagName: 'div',
         content: '<span class="atomicNumberText">' + element.atomicNumber + '</span><br><h1 class="center">' + element.symbol + '</h1><h5 class="center">' + element.name + '<br>' + element.atomicMass + '<br></h5>',
-        //content: $('#sampleText').html(),
         properties: {
+            //background: createColorStep(step),
+            //borderRadius: '100%',
             'height': '160px',
             'width': '120px',
             'color':'white',
@@ -79,75 +130,6 @@ Template.transformsGrid.onRendered(function() {
             'text-align': 'center',
             'font-family': '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',
             'font-weight': '300'
-
-        }
-    })
-    .setAttribute('src', 'panel-item-ticks-hq.png');
-
-
-  });*/
-});
-
-
-
-Template.singleTileDemo.onDestroyed(function(){
-  console.log("Removing ListOfSpinners");
-  $('div#famousScene .famous-dom-renderer').remove();
-});
-
-COLORS = [ [151, 131, 242], [47, 189, 232] ];
-COLOR_STEPS = 18;
-DOT_SIZE = 24;
-
-// The Demo lays out the dots in form of a grid.
-Demo = function(rows, cols) {
-    Famous.Node.call(this);
-
-    var count = 0;
-    this.dots = [];
-    for (var row = 0; row < rows; row++) {
-        for (var col = 0; col < cols; col++) {
-            var dot = new Dot(count++);
-            this.addChild(dot);
-            this.dots.push(dot);
-        }
-    }
-
-    // Add spinner component. This makes the Demo rotate.
-    this.spinner = new Spinner(this);
-
-    // Center demo
-    this
-        .setMountPoint(0.5, 0.5, 0.5)
-        .setAlign(0.5, 0.5, 0.5)
-        .setOrigin(0.5, 0.5, 0.5)
-        .setPosition(0, 0, 300);
-
-    this.layout = new Layout(this);
-    Famous.Engine.getClock().setInterval(function() {
-        this.layout.next();
-    }.bind(this), 2000);
-}
-
-
-
-// Dots are nodes.
-// They have a DOMElement attached to them by default.
-Dot = function(step) {
-    Famous.Node.call(this);
-
-    // Center dot.
-    this
-        .setMountPoint(0.5, 0.5, 0.5)
-        .setAlign(0.5, 0.5, 0.5)
-        .setSizeMode('absolute', 'absolute', 'absolute')
-        .setAbsoluteSize(DOT_SIZE, DOT_SIZE, DOT_SIZE);
-
-    // Add the DOMElement (DOMElements are components).
-    this.el = new Famous.DOMElement(this, {
-        properties: {
-            background: createColorStep(step),
-            borderRadius: '100%'
         }
     });
 
@@ -156,8 +138,6 @@ Dot = function(step) {
     // instead of instantly setting the final translation.
     this.position = new Famous.Position(this);
 }
-
-
 
 
 
@@ -172,11 +152,12 @@ Spinner = function(node) {
 
 // The onUpdate method will be called on every frame.
 Spinner.prototype.onUpdate = function(time) {
-    this.node.setRotation(time*0.001, -time*0.002, Math.PI / 4);
+    //this.node.setRotation(time * 0.00001, -time * 0.0002, Math.PI / 4);
 
     // We request an update from the node on the next frame.
-    this.node.requestUpdate(this.id);
+    //this.node.requestUpdate(this.id);
 };
+
 
 // The Layout component is a state machine. Each layout can is a state.
 // The state is defined by
@@ -230,9 +211,10 @@ Layout.prototype.next = function next() {
     }
 };
 
-Template.singleTileDemo.onDestroyed(function(){
+Template.transformsGrid.onDestroyed(function(){
   console.log("Removing TransformGrid");
-  $('div#famousScene .famous-dom-renderer').remove();
+  //$('#famousScene .famous-dom-renderer').remove();
+  //$('#famouseScene .famous-webgl-renderer').remove();
 });
 
 
