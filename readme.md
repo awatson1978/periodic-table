@@ -1,66 +1,50 @@
 Periodic Table
 ===========================================
 
-Famo.us caused quite a splash a few years ago with their Periodic Table demo.  The original demo is such an old version of Famo that it's difficult for people to even run, and none of the APIs are the same as what eventually got implemented.  So, this is an attempt to create a new version of the Periodic Table, which everybody loved, and to add to it the realtime database goodness that Meteor can provide.
+This is an attempt to create a new version of the Famo.us Periodic Table Demo, using Meteor.js for the database backend.  
 
-
-==========================================
-#### Online Demo  
-
-See an online demo at:  
-http://periodic-table.meteor.com/
 
 
 ==========================================
 #### Installation and Launch
 
 ````
-$ git clone https://github.com/awatson1978/meteor-cookbook/
-$ cd examples/periodic-table
+$ git clone https://github.com/awatson1978/periodic-table
+$ cd periodic-table
 $ meteor
 ````
 
+
 ==========================================
-#### Build Recipe  
+#### Local Development
 
+````bash
+# install the starrynight utility
+$ npm install starrynight
+
+# fetch the packages for local development
+$ starrynight fetch
 ````
-meteor create periodic-table
-cd periodic-table
 
-meteor add less
-meteor add grigio:babel
 
-starrynight scaffold --framework nightwatch
-starrynight scaffold --boilerplate project-homepage
-rm -rf periodic-table.*
+==========================================
+#### Database Editing
 
-starrynight scaffold --boilerplate iron-router
-starrynight scaffold --boilerplate mobile-app
-starrynight scaffold --boilerplate client-server
-starrynight scaffold --boilerplate active-record
 
-starrynight refactor --from record --to elements
-starrynight refactor --from Record --to Elements
-
-mkdir packages
-cd packages
-meteor create --package starrynight:dataset-periodic-table
-meteor add starrynight:dataset-periodic-table
-````
+Download [Robomongo](https://robomongo.org/) and connect to ``http://localhost:3001``.  Edit the ``Elements`` collection.  Refresh your browser.
 
 
 ==========================================
 #### Acknowledgements
 
 Periodic table data is courtesy of Chris Andrejewski.  
+https://www.npmjs.com/package/periodic-table  
+https://github.com/andrejewski/periodic-table    
 
-https://www.npmjs.com/package/periodic-table
-https://github.com/andrejewski/periodic-table  
 
-
-Electron Shell Diagrams - mostly Creative Commons 2.
-http://commons.wikimedia.org/wiki/Electron_shell
-http://commons.wikimedia.org/wiki/Electron_shell#/media/File:Periodic_Table_of_Elements_showing_Electron_Shells_(2011_version).svg
+Electron Shell Diagrams - mostly Creative Commons 2
+http://commons.wikimedia.org/wiki/Electron_shell  
+http://commons.wikimedia.org/wiki/Electron_shell#/media/File:Periodic_Table_of_Elements_showing_Electron_Shells_(2011_version).svg  
 
 ==========================================
 #### API Tutorials  
@@ -73,4 +57,4 @@ http://famous.org/docs
 ==========================================
 #### Licensing
 
-Meteor code is MIT; use as you will.  
+![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)

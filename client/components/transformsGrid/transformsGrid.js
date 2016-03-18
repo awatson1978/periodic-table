@@ -8,6 +8,13 @@ Router.route('/transforms', {
 });
 
 
+Template.transformsGrid.events({
+  "click .famous-dom-element": function (event, template){
+    alert("Atom No: " + event.currentTarget.firstChild.firstChild.innerHTML);
+  }
+});
+
+
 Template.transformsGrid.onRendered(function() {
   console.log("Rendering ListOfSpinners");
 
@@ -47,7 +54,7 @@ Template.transformsGrid.onRendered(function() {
 
 
       Elements.find({}, {limit: 36}).forEach(function(element, index){
-        console.log("element", element);
+        //console.log("element", element);
 
         var dot = new Dot(index, element);
         self.addChild(dot);

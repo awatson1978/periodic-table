@@ -1,0 +1,14 @@
+{
+  "clinical:active-layout": {
+    "git": "https://github.com/clinical-meteor/active-layout.git"
+  },
+  "clinical:theming-ui": {
+    "git": "https://github.com/clinical-meteor/theming-ui.git"
+  },
+  "clinical:theming": {
+    "git": "https://github.com/clinical-meteor/theming.git"
+  },
+  "clinical:error-pages": {
+    "git": "https://github.com/clinical-meteor/error-pages.git"
+  }
+}

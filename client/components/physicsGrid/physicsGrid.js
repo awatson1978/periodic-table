@@ -4,7 +4,7 @@ Router.route('/physics', {
   name: "physicsGrid",
   waitOn: function () {
     return Meteor.subscribe('Elements');
-  },
+  }  
 });
 
 physicsEngine = null;

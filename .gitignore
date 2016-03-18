@@ -1,0 +1,8 @@
+screenshots
+screenshots/*
+logs
+logs/*
+reports
+reports/*
+
+settings.json

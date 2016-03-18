@@ -9,9 +9,7 @@ autopublish
 insecure
 less
 grigio:babel
-iron:router
 
-starrynight:glass-ui
 starrynight:dataset-periodic-table
 
 famous
@@ -19,3 +17,10 @@ famous
 #raix:famono
 #gadicohen:famous
 #gadicohen:famous-views
+
+clinical:active-layout
+clinical:active-layout-reset
+clinical:theming
+clinical:theming-ui
+clinical:error-pages
+clinical:fonts

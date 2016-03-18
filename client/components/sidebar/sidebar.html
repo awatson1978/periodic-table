@@ -1,0 +1,24 @@
+<template name="sidebar">
+  <section id="sidebar" class="sidebarMenu">
+
+    <div id="sidebarMenuContents" class="sidebarMenuContents">
+
+        <div id="homeLink" class="sidebarMenuItem">Home</div>
+        <a id="themingLink" class="sidebarMenuItem withLowerBorder">Theming</a>
+
+        <a href="/blaze">Blaze Only</a>
+        <a href="/singleTile">Single Tile</a>
+        <a href="/spinners">Spinners</a>
+        <a href="/transforms">Transforms</a>
+        <a href="/physics" class="withLowerBorder">Physics</a>
+
+        <a href="https://github.com/awatson1978/periodic-table"><i class='fa fa-github'></i>Source Code</a>
+
+        <div id="connectionStatusPanel" class="centered">
+          {{getConnectionStatus}}
+        </div>
+
+
+    </div>
+  </section>
+</template>
