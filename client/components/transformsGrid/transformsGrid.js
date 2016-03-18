@@ -15,6 +15,7 @@ Template.transformsGrid.events({
 });
 
 
+var lastTransformGrid;
 Template.transformsGrid.onRendered(function() {
   console.log("Rendering ListOfSpinners");
 
@@ -22,29 +23,32 @@ Template.transformsGrid.onRendered(function() {
 
 
   Famous.Engine.init();
-  var scene = Famous.Engine.createScene('div#famousScene');
+  $('div#famousScene .famous-dom-renderer').remove();
 
-  var hydrogen = {
-    atomicMass: "1.00794(4)",
-    atomicNumber: 1,
-    atomicRadius: 37,
-    name: "Hydrogen",
-    symbol: "H"
-  };
+  famousScene = Famous.Engine.createScene('div#famousScene');
 
-  // var rootNode = scene.addChild();
+  // var hydrogen = {
+  //   atomicMass: "1.00794(4)",
+  //   atomicNumber: 1,
+  //   atomicRadius: 37,
+  //   name: "Hydrogen",
+  //   symbol: "H"
+  // };
+
+  // var rootNode = famousScene.addChild();
 
 
-  var camera = new Famous.Camera(scene);
+  var camera = new Famous.Camera(famousScene);
   camera.setDepth(2000);
 
 
 
-  var element = hydrogen;
+  //var element = hydrogen;
   var self = this;
 
   // The Demo lays out the dots in form of a grid.
-  Demo = function(rows, cols, Elements) {
+  //Demo = function(rows, cols, Elements) {
+  Demo = function(rows, cols, elements) {
       var self = this;
 
       Famous.Node.call(this);
@@ -53,7 +57,15 @@ Template.transformsGrid.onRendered(function() {
       this.dots = [];
 
 
-      Elements.find({}, {limit: 36}).forEach(function(element, index){
+      // Elements.find({}, {limit: 36}).forEach(function(element, index){
+      //   //console.log("element", element);
+      //
+      //   var dot = new Dot(index, element);
+      //   self.addChild(dot);
+      //   self.dots.push(dot);
+      // });
+
+      elements.forEach(function(element, index){
         //console.log("element", element);
 
         var dot = new Dot(index, element);
@@ -61,15 +73,16 @@ Template.transformsGrid.onRendered(function() {
         self.dots.push(dot);
       });
 
+
       // Add spinner component. This makes the Demo rotate.
       this.spinner = new Spinner(this);
 
       // Center demo
       this
-          .setMountPoint(0.5, 0.5, 0.5)
-          .setAlign(0.5, 0.5, 0.5)
-          .setOrigin(0.5, 0, 0)
-          .setPosition(0, 0);
+        .setMountPoint(0.5, 0.5, 0.5)
+        .setAlign(0.5, 0.5, 0.5)
+        .setOrigin(0.5, 0, 0)
+        .setPosition(0, 0);
 
       this.layout = new Layout(this);
       Famous.Engine.getClock().setInterval(function() {
@@ -82,8 +95,8 @@ Template.transformsGrid.onRendered(function() {
   Dot.prototype = Object.create(Famous.Node.prototype);
   Dot.prototype.constructor = Dot;
 
-
-  scene.addChild(new Demo(6, 6, Elements));
+  famousScene.addChild(new Demo(6, 6, Elements.find().fetch()));
+  //famousScene.addChild(new Demo(6, 6, Elements));
 
 });
 
@@ -220,8 +233,7 @@ Layout.prototype.next = function next() {
 
 Template.transformsGrid.onDestroyed(function(){
   console.log("Removing TransformGrid");
-  //$('#famousScene .famous-dom-renderer').remove();
-  //$('#famouseScene .famous-webgl-renderer').remove();
+  $('div#famousScene .famous-dom-renderer').remove();
 });
 
 

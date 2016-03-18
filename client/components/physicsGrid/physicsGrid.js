@@ -4,7 +4,7 @@ Router.route('/physics', {
   name: "physicsGrid",
   waitOn: function () {
     return Meteor.subscribe('Elements');
-  }  
+  }
 });
 
 physicsEngine = null;
@@ -12,9 +12,9 @@ physicsEngine = null;
 Template.physicsGrid.onRendered(function() {
   console.log("Rendering ListOfSpinners");
 
-  console.log("Famous", Famous);
-
   Famous.Engine.init();
+
+  console.log("Famous", Famous);
 
   physicsEngine = new Famous.PhysicsEngine();
   var grav = new Famous.Gravity3D(null, physicsEngine.bodies, {
@@ -24,20 +24,20 @@ Template.physicsGrid.onRendered(function() {
   });
   physicsEngine.add(grav);
 
+  $('div#famousScene .famous-dom-renderer').remove();
+  famousScene = Famous.Engine.createScene('div#famousScene');
+  var rootNode = famousScene.addChild();
 
-  var scene = Famous.Engine.createScene('div#famousScene');
-  var rootNode = scene.addChild();
 
-
-  var peUpdater = scene.addComponent({
+  var peUpdater = famousScene.addComponent({
       onUpdate: function (time) {
           physicsEngine.update(time);
-          scene.requestUpdateOnNextTick(peUpdater);
+          famousScene.requestUpdateOnNextTick(peUpdater);
         }
   });
 
-  scene.requestUpdate(peUpdater);
-  var root = scene.addChild();
+  famousScene.requestUpdate(peUpdater);
+  var root = famousScene.addChild();
   var sized = false;
   var hydrogen = {
     atomicMass: "1.00794(4)",
@@ -47,7 +47,7 @@ Template.physicsGrid.onRendered(function() {
     symbol: "H"
   };
   var element = hydrogen;
-
+  console.log('root', root);
 
   root.addComponent({
       onSizeChange: function (size) {
@@ -66,6 +66,7 @@ Template.physicsGrid.onRendered(function() {
 
 
   Dot = function(node, i, sceneSize, element) {
+    if (node) {
       node.setProportionalSize(1 / 8, 1 / 6)
           .setDifferentialSize(-4, -4);
 
@@ -99,6 +100,7 @@ Template.physicsGrid.onRendered(function() {
               'font-weight': '300'
           }
       });
+    }
   }
 
   Phys = function(node, x, y) {
@@ -146,9 +148,7 @@ Template.physicsGrid.onRendered(function() {
 
 Template.physicsGrid.onDestroyed(function(){
   console.log("Removing PhysicsGrid");
-  //$('#famousScene .famous-dom-renderer').remove();
-  //$('#famouseScene .famous-webgl-renderer').remove();
-  //physicsEngine = null;
+  $('div#famousScene .famous-dom-renderer').remove();
 });
 
 

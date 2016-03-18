@@ -18,7 +18,6 @@ Template.listOfSpinners.onRendered(function() {
 
 
   var scene = Famous.Engine.createScene('div#famousScene');
-
   var rootNode = scene.addChild();
 
 
